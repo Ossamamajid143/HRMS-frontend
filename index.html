@@ -4,32 +4,52 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HRMS - Modern Dashboard</title>
+    <title>Xnerds Solutions - HR Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['Plus Jakarta Sans', 'sans-serif'],
+            },
             colors: {
-              primary: {
-                DEFAULT: '#8b5cf6',
-                light: '#a78bfa',
-                dark: '#7c3aed',
+              xnerds: {
+                50: '#f0f4ff',
+                100: '#e0e9fe',
+                200: '#c1d3fe',
+                300: '#91b1fd',
+                400: '#5a84fa',
+                500: '#3356f5',
+                600: '#1e30ea',
+                700: '#1725d7',
+                800: '#1921ad',
+                900: '#1a228a',
+                950: '#141755',
               },
-              dark: {
-                900: '#0f172a',
-                800: '#1e293b',
-                700: '#334155',
-              }
             }
           }
         }
       }
     </script>
     <style type="text/tailwindcss">
+      @layer utilities {
+        .glass {
+          @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)];
+        }
+        .glass-dark {
+          @apply bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl;
+        }
+      }
       @layer base {
         body {
-          @apply bg-dark-800 text-slate-100;
+          @apply font-sans bg-slate-50 text-slate-900;
+        }
+        h1, h2, h3, h4 {
+          @apply font-display;
         }
       }
     </style>
