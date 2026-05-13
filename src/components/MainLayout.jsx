@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
   const { logout, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Start closed to avoid flicker on mobile
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [loadingAttendance, setLoadingAttendance] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -20,7 +20,7 @@ const MainLayout = ({ children }) => {
     }
   }, [user]);
 
-  // Handle mobile screen size changes
+  // Handle mobile screen size changes and initial state
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -29,6 +29,10 @@ const MainLayout = ({ children }) => {
         setSidebarOpen(true);
       }
     };
+    
+    // Run once on mount
+    handleResize();
+    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -132,8 +136,19 @@ const MainLayout = ({ children }) => {
       )}
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 bg-[#0f172a] flex flex-col z-50 transition-all duration-300 ease-in-out ${sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`}>
-        <div className="p-4 flex items-center h-16 border-b border-slate-800/50">
+        <div className="p-4 flex items-center justify-between h-16 border-b border-slate-800/50">
           <Logo className="w-8 h-8 flex-shrink-0" showText={sidebarOpen} />
+          {/* Mobile Close Button */}
+          {sidebarOpen && (
+            <button 
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden p-2 text-slate-400 hover:text-white"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
         
         <nav className="flex-grow py-6 overflow-y-auto overflow-x-hidden">
