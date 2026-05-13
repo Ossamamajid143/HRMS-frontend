@@ -217,13 +217,13 @@ const Dashboard = () => {
 
       {/* Section: Past Dates Stats */}
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h2 className="text-lg font-bold text-slate-800 dark:text-white">
             {activeTab === 'Leave Summary' ? 'Leave for Past Dates' : 'Attendance for Past Dates'}
           </h2>
-          <div className="flex items-center space-x-3">
+          <div className="flex flex-wrap items-center gap-3">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-md shadow-sm flex items-center space-x-4">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+              <span className="text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-400">
                 {new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} - {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
               </span>
               <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -233,7 +233,7 @@ const Dashboard = () => {
             {activeTab === 'Leave Summary' && (
               <button 
                 onClick={handleExport}
-                className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-md shadow-sm flex items-center space-x-2 text-xs font-bold transition-colors uppercase tracking-widest"
+                className="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-md shadow-sm flex items-center space-x-2 text-[10px] font-bold transition-colors uppercase tracking-widest"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -401,7 +401,7 @@ const Dashboard = () => {
 
       {/* Section: Bottom Analytical Chart */}
       <div className="bg-white dark:bg-slate-900 p-6 rounded-lg shadow-sm border border-slate-100 dark:border-slate-800">
-         <div className="flex justify-between items-center mb-6">
+         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
            <h2 className="text-sm font-bold text-slate-800 dark:text-white tracking-tight">
              {activeTab === 'Leave Summary' ? "Employees' Leave Stats" : "Employees' Arrival Stats"}
            </h2>

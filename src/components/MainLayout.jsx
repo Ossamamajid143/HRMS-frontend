@@ -8,7 +8,7 @@ const MainLayout = ({ children }) => {
   const { logout, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
   const [isCheckedIn, setIsCheckedIn] = useState(false);
   const [loadingAttendance, setLoadingAttendance] = useState(true);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -19,6 +19,26 @@ const MainLayout = ({ children }) => {
       fetchUnreadCount();
     }
   }, [user]);
+
+  // Handle mobile screen size changes
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Close sidebar when navigating on mobile
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarOpen(false);
+    }
+  }, [location.pathname]);
 
   const checkAttendanceStatus = async () => {
     try {
@@ -101,8 +121,15 @@ const MainLayout = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen bg-[#f3f4f6] dark:bg-slate-950 font-sans overflow-hidden text-slate-700 dark:text-slate-300">
+    <div className="flex h-screen bg-[#f3f4f6] dark:bg-slate-950 font-sans overflow-hidden text-slate-700 dark:text-slate-300 relative">
       
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
       {/* Sidebar */}
       <aside className={`fixed inset-y-0 left-0 bg-[#0f172a] flex flex-col z-50 transition-all duration-300 ease-in-out ${sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`}>
         <div className="p-4 flex items-center h-16 border-b border-slate-800/50">
@@ -142,6 +169,31 @@ const MainLayout = ({ children }) => {
               </Link>
             );
           })}
+
+          {/* Mobile-only Top Menu Items */}
+          <div className="md:hidden mt-8 pt-8 border-t border-slate-800/50">
+             <p className="px-6 mb-4 text-[9px] font-black text-slate-500 uppercase tracking-widest">Management</p>
+             {topMenuItems.map((item) => {
+               const isActive = location.pathname === item.path;
+               if (item.name === 'DASHBOARD' && location.pathname === '/') return null; // Skip dashboard if already home
+               return (
+                 <Link
+                   key={item.name}
+                   to={item.path}
+                   className={`flex items-center px-6 py-3 transition-all group relative ${
+                     isActive
+                       ? 'text-white bg-blue-600/10'
+                       : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                   }`}
+                 >
+                   <div className={`w-1.5 h-1.5 rounded-full mr-4.5 ${isActive ? 'bg-blue-500' : 'bg-slate-600'}`} />
+                   <span className={`ml-4 text-[10px] font-bold transition-all duration-300 whitespace-nowrap ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+                     {item.name}
+                   </span>
+                 </Link>
+               );
+             })}
+          </div>
         </nav>
 
         <div className="p-4 border-t border-slate-800/50">
@@ -171,7 +223,7 @@ const MainLayout = ({ children }) => {
               </svg>
             </button>
 
-            <nav className="flex items-center space-x-8 h-full min-w-max">
+            <nav className="hidden md:flex items-center space-x-8 h-full min-w-max">
               {topMenuItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
@@ -220,7 +272,7 @@ const MainLayout = ({ children }) => {
             </Link>
 
             <div className="flex items-center space-x-3 border-l border-slate-100 dark:border-slate-800 pl-6">
-              <div className="flex flex-col items-end">
+              <div className="hidden sm:flex flex-col items-end">
                 <p className="text-[11px] font-black text-slate-900 dark:text-white leading-tight">{user?.name}</p>
                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{user?.role || 'Employee'}</p>
               </div>
