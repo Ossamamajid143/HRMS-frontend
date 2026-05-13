@@ -196,6 +196,8 @@ const Register = () => {
                 theme="filled_black"
                 shape="pill"
                 text="signup_with"
+                useOneTap={false}
+                auto_select={false}
               />
             </div>
           </div>

@@ -170,6 +170,8 @@ const Login = () => {
                 theme="filled_black"
                 shape="pill"
                 text="signin_with"
+                useOneTap={false}
+                auto_select={false}
               />
             </div>
           </div>
