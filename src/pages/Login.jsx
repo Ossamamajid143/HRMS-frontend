@@ -167,10 +167,9 @@ const Login = () => {
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError("Google Login Failed")}
-                useOneTap
                 theme="filled_black"
                 shape="pill"
-                width="100%"
+                text="signin_with"
               />
             </div>
           </div>

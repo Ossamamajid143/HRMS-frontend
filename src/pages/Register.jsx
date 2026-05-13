@@ -193,10 +193,9 @@ const Register = () => {
               <GoogleLogin
                 onSuccess={handleGoogleSuccess}
                 onError={() => setError("Google Login Failed")}
-                useOneTap
                 theme="filled_black"
                 shape="pill"
-                width="100%"
+                text="signup_with"
               />
             </div>
           </div>
